@@ -24,11 +24,24 @@ var UIController = (function() {
 })();
 
 var controller = (function(budgetCtrl, UICtrl) {
-  var DOM = UICtrl.getDOMstrings();
+  var setupEventListeners = function() {
+    var DOM = UICtrl.getDOMstrings();
+    document
+      .querySelector(DOM.inputButton)
+      .addEventListener("click", ctrlAddItem);
+
+    document.addEventListener("keypress", function(event) {
+      if (event.keyCode === 13 || event.which === 13) {
+        // console.log("Enter Key was Pressed");
+        ctrlAddItem();
+      }
+    });
+  };
 
   var ctrlAddItem = function() {
     // 1. get the filled input data
     var input = UICtrl.getinput();
+
     console.log(input);
 
     // 2. add the item to budget controller
@@ -38,14 +51,12 @@ var controller = (function(budgetCtrl, UICtrl) {
     console.log("aDDiTEM FUNC CALLED");
   };
 
-  document
-    .querySelector(DOM.inputButton)
-    .addEventListener("click", ctrlAddItem);
-
-  document.addEventListener("keypress", function(event) {
-    if (event.keyCode === 13 || event.which === 13) {
-      // console.log("Enter Key was Pressed");
-      ctrlAddItem();
+  return {
+    init: function() {
+      console.log("Application has Started");
+      setupEventListeners();
     }
-  });
+  };
 })(budgetController, UIController);
+
+controller.init();
